@@ -1,0 +1,48 @@
+{% extends "home/home.html" %}
+{% import "ui/search_page.html" as page %}
+
+{% block css %}
+  <style>
+    .navbar-brand > img {
+      display: inline;
+    }
+
+    .media {
+      padding: 3px;
+      border: 1px solid #ccc
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <ol class="breadcrumb" style="margin-top:6px;">
+        <li>与"{{ search_key }}"有关的电影，共{{ movie_count }}部</li>
+      </ol>
+    </div>
+    <div class="col-md-12">
+      {% for movie in page_data.items %}
+        <div class="media">
+          <div class="media-left">
+            <a href="{{ url_for("home.play",id=movie.id,page=1) }}">
+              <img class="media-object" src="{{ url_for('static',filename='uploads/'+movie.logo) }}"
+                   alt="{{ movie.title }}" style="width:131px ">
+            </a>
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading">{{ movie.title }}
+              <a href="{{ url_for("home.play",id=movie.id,page=1) }}" class="label label-primary pull-right">
+                <span class="glyphicon glyphicon-play"></span>播放影片
+              </a>
+            </h4>
+            {{ movie.info }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="col-md-12 text-center">
+      {{ page.page(page_data,"home.search") }}
+    </div>
+  </div>
+{% endblock %}
